@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xshxy.carsysdemo.mapper.DrivingDataMapper">
+  <resultMap id="BaseResultMap" type="com.xshxy.carsysdemo.bean.DrivingData">
+    <id column="data_id" jdbcType="INTEGER" property="dataId" />
+    <result column="vehicle_id" jdbcType="INTEGER" property="vehicleId" />
+    <result column="current_speed" jdbcType="INTEGER" property="currentSpeed" />
+    <result column="current_ele" jdbcType="INTEGER" property="currentEle" />
+    <result column="brake_deep" jdbcType="FLOAT" property="brakeDeep" />
+    <result column="direction_angle" jdbcType="FLOAT" property="directionAngle" />
+    <result column="block_count" jdbcType="INTEGER" property="blockCount" />
+    <result column="power" jdbcType="INTEGER" property="power" />
+    <result column="timestamp" jdbcType="TIMESTAMP" property="timestamp" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    data_id, vehicle_id, current_speed, current_ele, brake_deep, direction_angle, block_count, 
+    `power`, `timestamp`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from driving_data
+    where data_id = #{dataId,jdbcType=INTEGER}
+  </select>
+    <select id="selectLimitByVehicleId" resultType="com.xshxy.carsysdemo.bean.DrivingData">
+      SELECT
+      <include refid="Base_Column_List"></include>
+      from driving_data
+      WHERE vehicle_id = ${vehicleId}
+      ORDER BY timestamp DESC
+      LIMIT #{offset},#{pageSize}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from driving_data
+    where data_id = #{dataId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="data_id" keyProperty="dataId" parameterType="com.xshxy.carsysdemo.bean.DrivingData" useGeneratedKeys="true">
+    insert into driving_data (vehicle_id, current_speed, current_ele, 
+      brake_deep, direction_angle, block_count, 
+      `power`, `timestamp`)
+    values (#{vehicleId,jdbcType=INTEGER}, #{currentSpeed,jdbcType=INTEGER}, #{currentEle,jdbcType=INTEGER}, 
+      #{brakeDeep,jdbcType=FLOAT}, #{directionAngle,jdbcType=FLOAT}, #{blockCount,jdbcType=INTEGER}, 
+      #{power,jdbcType=INTEGER}, #{timestamp,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="data_id" keyProperty="dataId" parameterType="com.xshxy.carsysdemo.bean.DrivingData" useGeneratedKeys="true">
+    insert into driving_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="vehicleId != null">
+        vehicle_id,
+      </if>
+      <if test="currentSpeed != null">
+        current_speed,
+      </if>
+      <if test="currentEle != null">
+        current_ele,
+      </if>
+      <if test="brakeDeep != null">
+        brake_deep,
+      </if>
+      <if test="directionAngle != null">
+        direction_angle,
+      </if>
+      <if test="blockCount != null">
+        block_count,
+      </if>
+      <if test="power != null">
+        `power`,
+      </if>
+      <if test="timestamp != null">
+        `timestamp`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="vehicleId != null">
+        #{vehicleId,jdbcType=INTEGER},
+      </if>
+      <if test="currentSpeed != null">
+        #{currentSpeed,jdbcType=INTEGER},
+      </if>
+      <if test="currentEle != null">
+        #{currentEle,jdbcType=INTEGER},
+      </if>
+      <if test="brakeDeep != null">
+        #{brakeDeep,jdbcType=FLOAT},
+      </if>
+      <if test="directionAngle != null">
+        #{directionAngle,jdbcType=FLOAT},
+      </if>
+      <if test="blockCount != null">
+        #{blockCount,jdbcType=INTEGER},
+      </if>
+      <if test="power != null">
+        #{power,jdbcType=INTEGER},
+      </if>
+      <if test="timestamp != null">
+        #{timestamp,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xshxy.carsysdemo.bean.DrivingData">
+    update driving_data
+    <set>
+      <if test="vehicleId != null">
+        vehicle_id = #{vehicleId,jdbcType=INTEGER},
+      </if>
+      <if test="currentSpeed != null">
+        current_speed = #{currentSpeed,jdbcType=INTEGER},
+      </if>
+      <if test="currentEle != null">
+        current_ele = #{currentEle,jdbcType=INTEGER},
+      </if>
+      <if test="brakeDeep != null">
+        brake_deep = #{brakeDeep,jdbcType=FLOAT},
+      </if>
+      <if test="directionAngle != null">
+        direction_angle = #{directionAngle,jdbcType=FLOAT},
+      </if>
+      <if test="blockCount != null">
+        block_count = #{blockCount,jdbcType=INTEGER},
+      </if>
+      <if test="power != null">
+        `power` = #{power,jdbcType=INTEGER},
+      </if>
+      <if test="timestamp != null">
+        `timestamp` = #{timestamp,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where data_id = #{dataId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xshxy.carsysdemo.bean.DrivingData">
+    update driving_data
+    set vehicle_id = #{vehicleId,jdbcType=INTEGER},
+      current_speed = #{currentSpeed,jdbcType=INTEGER},
+      current_ele = #{currentEle,jdbcType=INTEGER},
+      brake_deep = #{brakeDeep,jdbcType=FLOAT},
+      direction_angle = #{directionAngle,jdbcType=FLOAT},
+      block_count = #{blockCount,jdbcType=INTEGER},
+      `power` = #{power,jdbcType=INTEGER},
+      `timestamp` = #{timestamp,jdbcType=TIMESTAMP}
+    where data_id = #{dataId,jdbcType=INTEGER}
+  </update>
+</mapper>

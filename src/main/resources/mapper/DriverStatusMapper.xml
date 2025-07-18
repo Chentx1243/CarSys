@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xshxy.carsysdemo.mapper.DriverStatusMapper">
+  <resultMap id="BaseResultMap" type="com.xshxy.carsysdemo.bean.DriverStatus">
+    <id column="data_id" jdbcType="INTEGER" property="dataId" />
+    <result column="vehicle_id" jdbcType="INTEGER" property="vehicleId" />
+    <result column="blink" jdbcType="INTEGER" property="blink" />
+    <result column="yawning" jdbcType="INTEGER" property="yawning" />
+    <result column="face_data" jdbcType="FLOAT" property="faceData" />
+    <result column="face_details" jdbcType="FLOAT" property="faceDetails" />
+    <result column="timestamp" jdbcType="TIMESTAMP" property="timestamp" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    data_id, vehicle_id, blink, yawning, face_data, face_details, `timestamp`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from driver_status
+    where data_id = #{dataId,jdbcType=INTEGER}
+  </select>
+    <select id="selectLimitByVehicleId" resultType="com.xshxy.carsysdemo.bean.DriverStatus">
+      SELECT
+      <include refid="Base_Column_List"></include>
+      from driver_status
+      WHERE vehicle_id = ${vehicleId}
+      ORDER BY timestamp DESC
+      LIMIT #{offset},#{pageSize}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from driver_status
+    where data_id = #{dataId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="data_id" keyProperty="dataId" parameterType="com.xshxy.carsysdemo.bean.DriverStatus" useGeneratedKeys="true">
+    insert into driver_status (vehicle_id, blink, yawning, 
+      face_data, face_details, `timestamp`
+      )
+    values (#{vehicleId,jdbcType=INTEGER}, #{blink,jdbcType=INTEGER}, #{yawning,jdbcType=INTEGER}, 
+      #{faceData,jdbcType=FLOAT}, #{faceDetails,jdbcType=FLOAT}, #{timestamp,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="data_id" keyProperty="dataId" parameterType="com.xshxy.carsysdemo.bean.DriverStatus" useGeneratedKeys="true">
+    insert into driver_status
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="vehicleId != null">
+        vehicle_id,
+      </if>
+      <if test="blink != null">
+        blink,
+      </if>
+      <if test="yawning != null">
+        yawning,
+      </if>
+      <if test="faceData != null">
+        face_data,
+      </if>
+      <if test="faceDetails != null">
+        face_details,
+      </if>
+      <if test="timestamp != null">
+        `timestamp`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="vehicleId != null">
+        #{vehicleId,jdbcType=INTEGER},
+      </if>
+      <if test="blink != null">
+        #{blink,jdbcType=INTEGER},
+      </if>
+      <if test="yawning != null">
+        #{yawning,jdbcType=INTEGER},
+      </if>
+      <if test="faceData != null">
+        #{faceData,jdbcType=FLOAT},
+      </if>
+      <if test="faceDetails != null">
+        #{faceDetails,jdbcType=FLOAT},
+      </if>
+      <if test="timestamp != null">
+        #{timestamp,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xshxy.carsysdemo.bean.DriverStatus">
+    update driver_status
+    <set>
+      <if test="vehicleId != null">
+        vehicle_id = #{vehicleId,jdbcType=INTEGER},
+      </if>
+      <if test="blink != null">
+        blink = #{blink,jdbcType=INTEGER},
+      </if>
+      <if test="yawning != null">
+        yawning = #{yawning,jdbcType=INTEGER},
+      </if>
+      <if test="faceData != null">
+        face_data = #{faceData,jdbcType=FLOAT},
+      </if>
+      <if test="faceDetails != null">
+        face_details = #{faceDetails,jdbcType=FLOAT},
+      </if>
+      <if test="timestamp != null">
+        `timestamp` = #{timestamp,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where data_id = #{dataId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xshxy.carsysdemo.bean.DriverStatus">
+    update driver_status
+    set vehicle_id = #{vehicleId,jdbcType=INTEGER},
+      blink = #{blink,jdbcType=INTEGER},
+      yawning = #{yawning,jdbcType=INTEGER},
+      face_data = #{faceData,jdbcType=FLOAT},
+      face_details = #{faceDetails,jdbcType=FLOAT},
+      `timestamp` = #{timestamp,jdbcType=TIMESTAMP}
+    where data_id = #{dataId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xshxy.carsysdemo.mapper.EnvironmentWeatherMapper">
+  <resultMap id="BaseResultMap" type="com.xshxy.carsysdemo.bean.EnvironmentWeather">
+    <id column="data_id" jdbcType="INTEGER" property="dataId" />
+    <result column="vehicle_id" jdbcType="INTEGER" property="vehicleId" />
+    <result column="current_temperature" jdbcType="FLOAT" property="currentTemperature" />
+    <result column="current_humidity" jdbcType="FLOAT" property="currentHumidity" />
+    <result column="wind_direction" jdbcType="INTEGER" property="windDirection" />
+    <result column="wind_power" jdbcType="INTEGER" property="windPower" />
+    <result column="timestamp" jdbcType="TIMESTAMP" property="timestamp" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    data_id, vehicle_id, current_temperature, current_humidity, wind_direction, wind_power, 
+    `timestamp`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from environment_weather
+    where data_id = #{dataId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAllByPage" resultType="com.xshxy.carsysdemo.bean.EnvironmentWeather">
+    select
+    <include refid="Base_Column_List"/>
+    from environment_weather
+    where vehicle_id = #{id}
+    ORDER BY timestamp DESC
+    LIMIT #{offset}, #{pageSize}
+  </select>
+  <select id="selectWindDirectionCount" resultType="com.xshxy.carsysdemo.bean.WindCount">
+    SELECT
+      e.wind_direction windDirection,
+      COUNT(*) AS count
+    FROM
+      (select * from environment_weather ORDER BY timestamp DESC LIMIT 0, 25) e
+    GROUP BY
+      e.wind_direction
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from environment_weather
+    where data_id = #{dataId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="data_id" keyProperty="dataId" parameterType="com.xshxy.carsysdemo.bean.EnvironmentWeather" useGeneratedKeys="true">
+    insert into environment_weather (vehicle_id, current_temperature, current_humidity, 
+      wind_direction, wind_power, `timestamp`
+      )
+    values (#{vehicleId,jdbcType=INTEGER}, #{currentTemperature,jdbcType=FLOAT}, #{currentHumidity,jdbcType=FLOAT}, 
+      #{windDirection,jdbcType=INTEGER}, #{windPower,jdbcType=INTEGER}, #{timestamp,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="data_id" keyProperty="dataId" parameterType="com.xshxy.carsysdemo.bean.EnvironmentWeather" useGeneratedKeys="true">
+    insert into environment_weather
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="vehicleId != null">
+        vehicle_id,
+      </if>
+      <if test="currentTemperature != null">
+        current_temperature,
+      </if>
+      <if test="currentHumidity != null">
+        current_humidity,
+      </if>
+      <if test="windDirection != null">
+        wind_direction,
+      </if>
+      <if test="windPower != null">
+        wind_power,
+      </if>
+      <if test="timestamp != null">
+        `timestamp`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="vehicleId != null">
+        #{vehicleId,jdbcType=INTEGER},
+      </if>
+      <if test="currentTemperature != null">
+        #{currentTemperature,jdbcType=FLOAT},
+      </if>
+      <if test="currentHumidity != null">
+        #{currentHumidity,jdbcType=FLOAT},
+      </if>
+      <if test="windDirection != null">
+        #{windDirection,jdbcType=INTEGER},
+      </if>
+      <if test="windPower != null">
+        #{windPower,jdbcType=INTEGER},
+      </if>
+      <if test="timestamp != null">
+        #{timestamp,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xshxy.carsysdemo.bean.EnvironmentWeather">
+    update environment_weather
+    <set>
+      <if test="vehicleId != null">
+        vehicle_id = #{vehicleId,jdbcType=INTEGER},
+      </if>
+      <if test="currentTemperature != null">
+        current_temperature = #{currentTemperature,jdbcType=FLOAT},
+      </if>
+      <if test="currentHumidity != null">
+        current_humidity = #{currentHumidity,jdbcType=FLOAT},
+      </if>
+      <if test="windDirection != null">
+        wind_direction = #{windDirection,jdbcType=INTEGER},
+      </if>
+      <if test="windPower != null">
+        wind_power = #{windPower,jdbcType=INTEGER},
+      </if>
+      <if test="timestamp != null">
+        `timestamp` = #{timestamp,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where data_id = #{dataId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xshxy.carsysdemo.bean.EnvironmentWeather">
+    update environment_weather
+    set vehicle_id = #{vehicleId,jdbcType=INTEGER},
+      current_temperature = #{currentTemperature,jdbcType=FLOAT},
+      current_humidity = #{currentHumidity,jdbcType=FLOAT},
+      wind_direction = #{windDirection,jdbcType=INTEGER},
+      wind_power = #{windPower,jdbcType=INTEGER},
+      `timestamp` = #{timestamp,jdbcType=TIMESTAMP}
+    where data_id = #{dataId,jdbcType=INTEGER}
+  </update>
+</mapper>
